@@ -90,11 +90,16 @@ public class DataBaseUtil {
     public int queryByCount (String packageName) {
         SQLiteDatabase db = dataHelper.getReadableDatabase();
         String sql = String.format("select %s, %s, %s, %s from %s where package=%s", DataHelper.APP_NAME,
-                DataHelper.APP_PACKAGE, DataHelper.APP_PATH, DataHelper.APP_ICON, DataHelper.TABLE_NAME, "'" + packageName + "'");
+                DataHelper.APP_PACKAGE, DataHelper.APP_PATH, DataHelper.APP_LAUNCHER_COUNT, DataHelper.TABLE_NAME, "'" + packageName + "'");
         Cursor cursor = db.rawQuery(sql, null);
-        int count = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DataHelper.APP_LAUNCHER_COUNT)));
+        int count = 0;
+        if (cursor != null && cursor.moveToFirst()){
+            count = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DataHelper.APP_LAUNCHER_COUNT)));
+        }
         Log.e("1112sa", count+"");
-        cursor.close();
+        if (cursor != null){
+            cursor.close();
+        }
         db.close();
         return count;
     }
@@ -109,10 +114,7 @@ public class DataBaseUtil {
             appInfo.setName(cursor.getString(name));
             appInfo.setPkg(cursor.getString(packageName));
             appInfo.setApkPath(cursor.getString(path));
-            byte[] image = cursor.getBlob(icon);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-            Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
-            appInfo.setDrawable(drawable);
+
             appInfos.add(appInfo);
         }
         cursor.close();

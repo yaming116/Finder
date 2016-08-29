@@ -525,10 +525,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void writeDataForDataBase(String packageName, AppInfo appInfo) {
-        Bitmap bitmap = drawableToBitmap(appInfo.getDrawable());
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteOut);
-        byte[] image = byteOut.toByteArray();
+        byte[] image = null;
         long time = System.currentTimeMillis();
         boolean result = dataBaseUtil.queryByPackage(packageName);
         if (result) {

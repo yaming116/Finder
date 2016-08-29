@@ -1,6 +1,7 @@
 package com.heyniu.applicationfinder;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -60,6 +61,13 @@ public class AppAdapter extends BaseAdapter{
         }
 
         final AppInfo appInfo = (AppInfo) getItem(position);
+        if (appInfo.getDrawable() == null){
+            try {
+                appInfo.setDrawable(convertView.getContext().getPackageManager().getApplicationIcon(appInfo.getPkg()));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         viewHolder.imageView.setImageDrawable(appInfo.getDrawable());
         if (key == null || key.length() == 0) {
             viewHolder.name.setText(appInfo.getName());
