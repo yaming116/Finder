@@ -38,6 +38,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flyco.systembar.SystemBarHelper;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -74,18 +76,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Only support API 20 or later
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Toast.makeText(getApplicationContext(), "Finder does not support the current Android version!",
-                    Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        SystemBarHelper.tintStatusBar(this, getResources().getColor(R.color.colorPrimaryDark));
         init();
 
         new Handler().post(new Runnable() {
