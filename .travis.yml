@@ -8,7 +8,7 @@ android:
   - extra-android-support
 before_install:
 - openssl aes-256-cbc -K $encrypted_e41864bb9dab_key -iv $encrypted_e41864bb9dab_iv
-  -in finder.jks.enc -out finder.jks -d
+  -in app/finder.jks.enc -out app/finder.jks -d
 - gem install fir-cli
 script:
 - "./gradlew assembleRelease"
