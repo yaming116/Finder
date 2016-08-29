@@ -1,13 +1,23 @@
 language: android
 android:
   components:
-  - build-tools-23.0.1
+  - build-tools-23.0.3
   - android-23
   - extra-android-m2repository
   - extra-android-support
 before_install:
-#- openssl aes-256-cbc -K $encrypted_c2b3cee57976_key -iv $encrypted_c2b3cee57976_iv
-#  -in finder.jks.enc -out app/finder.jks -d
 - gem install fir-cli
 script:
 - "./gradlew assembleRelease"
+deploy:
+  provider: releases
+  api_key:
+    secure: qsxU+Oc+rbycpSfMitmpQvAopNZGFrPQPj97y3rUEpC26X4Zl+eWjQ90FsJzxNYhxT4N3LTAInuCAfo/lQZGH+jzQ2DN1AELz2LHyXmNxehGLd6xymt87/K2Rjp+FUEH9Vj67b8yHIpmedKDIzzzJP+z/OQkGP6Lq8lITsFqxP3+++XRiDXxeUEZD9emeOHUV3NYUjAuP4tRQkK/ZhJnnpAKBL5xJp3Uq14LBXu7JIrlsBLWbjLJOS7J7948eGH0bAXEUPBntmz418hIM7l+ZiBDx2txSh/ahoYReg/p8CNEOfSOT0aIiztbolmfzqiqIvBEHBfBZ0D/Y7isUGSRRsnKuq0PdDO7foN1wO4r9ZCq5vobW5UZWxxgBvlFGNmamSbtUW4vte7QN2f5niG9HpOR35JlpHpphTIBOYqBcYJ2+DEaN50sjbtZgB4tAvO+NC3IC04X1TUO3gPK3Fwh8Q6ryTGoPqWhWxo70Ep/Ah8k6BkElUVSAON5GNAhG49wkYPNW7SR0Hsiy0CBVoR8q6qItJClMDMhAMnQmgZ4GJyHlDYxEiNL9AxhMRRQmbSvf7XNSJicPYjeWVJus3WwZX74WkwRkgRUlEoloP/UxB+8gciDp99SCpq2OOqoEMgVw5DVqlfiuK7swHw1Il61yHTpRcNrmdnyKF/yYeuI67c=
+  file: app/build/outputs/apk/app-release.apk
+  skip_cleanup: true
+  on:
+    tags: true
+after_deploy:
+- fir p app/build/outputs/apk/app-release.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
+git:
+  depth: 1
